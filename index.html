@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Descarga</title>
+    <style>
+        /* Estilos CSS para que se vea bonito */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Para que se adapte a móviles */
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .btn-descargar {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .btn-descargar:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mis Imágenes</h1>
+
+    <div class="container">
+        <div class="card">
+            <img src="https://picsum.photos/300/200?random=1" id="img1" alt="Paisaje Aleatorio 1">
+            <button class="btn-descargar" onclick="descargarImagen('https://picsum.photos/300/200?random=1', 'imagen-1.jpg')">
+                Descargar Imagen 1
+            </button>
+        </div>
+
+        <div class="card">
+            <img src="https://picsum.photos/300/200?random=2" id="img2" alt="Paisaje Aleatorio 2">
+            <button class="btn-descargar" onclick="descargarImagen('https://picsum.photos/300/200?random=2', 'imagen-2.jpg')">
+                Descargar Imagen 2
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica JavaScript para forzar la descarga
+        async function descargarImagen(url, nombreArchivo) {
+            try {
+                // 1. Obtenemos la imagen como un "blob" (archivo binario)
+                const respuesta = await fetch(url);
+                const blob = await respuesta.blob();
+
+                // 2. Creamos un enlace invisible temporal
+                const enlace = document.createElement('a');
+                enlace.href = URL.createObjectURL(blob);
+                enlace.download = nombreArchivo;
+
+                // 3. Hacemos clic en el enlace automáticamente y luego lo borramos
+                document.body.appendChild(enlace);
+                enlace.click();
+                document.body.removeChild(enlace);
+
+            } catch (error) {
+                alert('Hubo un error al intentar descargar la imagen.');
+                console.error(error);
+            }
+        }
+    </script>
+
+</body>
+</html>
